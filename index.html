@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GearVault - Tech & Audio Inventory Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar-nav" style="display: none;">
+            <div class="brand">
+                <h2>GearVault</h2>
+                <p>Track - Organize - Upgrade</p>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-link active" data-target="dashboard-view">Dashboard</a>
+                <a href="#" class="nav-link" data-target="inventory-view">My Inventory</a>
+                <a href="#" class="nav-link" data-target="wishlist-view">Wishlist</a>
+                <a href="#" class="nav-link" data-target="analytics-view">Analytics</a>
+                <a href="#" class="nav-link" data-target="settings-view">Settings</a>
+                <a href="#" class="nav-link logout-link" id="logout-btn">Log out</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- 1. DASHBOARD VIEW -->
+            <section id="dashboard-view" class="view-section">
+                <div class="welcome-banner">
+                    <h2>Welcome Back, <span id="user-display-name">User</span>!</h2>
+                    <p>Manage your tech, track your gear, and plan your next upgrade.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Items</h3>
+                        <p id="stat-total">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Owned Items</h3>
+                        <p id="stat-owned">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Wishlist Items</h3>
+                        <p id="stat-wishlist">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Value</h3>
+                        <p id="stat-value">₱0.00</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-controls">
+                    <div class="search-bar-wrapper">
+                        <input type="text" id="search-input" placeholder="Search your gear...">
+                        <button id="clear-search" class="icon-btn">&times;</button>
+                    </div>
+                    <select id="category-filter">
+                        <option value="All">All Categories</option>
+                        <option value="CPU">CPU</option>
+                        <option value="GPU">GPU</option>
+                        <option value="Audio">Audio</option>
+                        <option value="Peripherals">Peripherals</option>
+                        <option value="Monitor">Monitor</option>
+                    </select>
+                    <button id="open-modal-btn" class="primary-btn">+ Add New Gear</button>
+                </div>
+
+                <div class="dashboard-widgets">
+                    <div class="widget-box">
+                        <h3>Inventory Summary</h3>
+                        <p>Owned Budget: <span id="summary-owned-budget">₱0.00</span></p>
+                        <p>Wishlist Total: <span id="summary-wishlist-total">₱0.00</span></p>
+                    </div>
+                    <div class="widget-box">
+                        <h3>Gear by Category</h3>
+                        <div id="category-breakdown-list">No data recorded yet.</div>
+                    </div>
+                    <div class="widget-box">
+                        <h3>Recent Activity</h3>
+                        <ul id="recent-activity-list" class="activity-list">
+                            <li>System initialized. Ready for tracking.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. MY INVENTORY VIEW -->
+            <section id="inventory-view" class="view-section">
+                <div class="section-header">
+                    <h2>My Inventory</h2>
+                    <p>View and manage all your owned gear</p>
+                </div>
+                <div class="table-responsive">
+                    <table class="gear-table">
+                        <thead>
+                            <tr>
+                                <th>Name Items</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Condition</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-table-body">
+                            <!-- Dynamic rows injected here -->
+                        </tbody>
+                    </table>
+                </div>
+                <button id="clear-all-btn" class="danger-btn">Clear All</button>
+            </section>
+
+            <!-- 3. WISHLIST VIEW -->
+            <section id="wishlist-view" class="view-section">
+                <div class="section-header">
+                    <h2>My Wishlist</h2>
+                    <p>Your dream upgrades in one place</p>
+                </div>
+                <div class="gear-grid" id="wishlist-grid">
+                    <!-- Dynamic cards injected here -->
+                </div>
+                <div class="wishlist-footer">
+                    <p>Total Wishlist Items: <span id="wishlist-count">0</span></p>
+                    <button id="move-all-inventory-btn" class="secondary-btn">Move all to inventory</button>
+                </div>
+            </section>
+
+            <!-- 4. ANALYTICS VIEW -->
+            <section id="analytics-view" class="view-section">
+                <div class="section-header">
+                    <h2>Analytics</h2>
+                    <p>Track your spending and gear statistics.</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card"><h3>Total Items</h3><p id="analytics-total">0</p></div>
+                    <div class="stat-card"><h3>Owned</h3><p id="analytics-owned">0</p></div>
+                    <div class="stat-card"><h3>Wishlist</h3><p id="analytics-wishlist">0</p></div>
+                </div>
+                <div class="dashboard-widgets">
+                    <div class="widget-box">
+                        <h3>Gear by Category Distribution</h3>
+                        <div id="analytics-category-list">No data.</div>
+                    </div>
+                    <div class="widget-box">
+                        <h3>Budget Overview</h3>
+                        <p>Owned Budget: <span id="analytics-owned-budget">₱0.00</span></p>
+                        <p>Wishlist Total: <span id="analytics-wishlist-total">₱0.00</span></p>
+                        <p><strong>Total Combined Value: <span id="analytics-total-value">₱0.00</span></strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. SETTINGS VIEW -->
+            <section id="settings-view" class="view-section">
+                <div class="section-header">
+                    <h2>Settings</h2>
+                    <p>Manage your account and preferences.</p>
+                </div>
+                <div class="settings-card">
+                    <h3>Account Information</h3>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="settings-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="settings-email">
+                    </div>
+                    <button id="save-account-btn" class="primary-btn">Save Changes</button>
+                </div>
+                <div class="settings-card">
+                    <h3>Preferences</h3>
+                    <label><input type="checkbox" id="dark-mode-toggle"> Dark Mode</label>
+                    <label><input type="checkbox" id="notifications-toggle" checked> Notifications</label>
+                </div>
+                <div class="settings-card">
+                    <h3>Data Management</h3>
+                    <button id="export-btn" class="secondary-btn">Export Inventory</button>
+                    <button id="settings-clear-btn" class="danger-btn">Clear All Data</button>
+                </div>
+            </section>
+
+            <!-- 6. LOGIN / SIGNUP VIEW -->
+            <section id="login-view" class="view-section active">
+                <div class="auth-box" id="login-box">
+                    <h2>Welcome Back!</h2>
+                    <p>Log in to your GearVault</p>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <input type="text" id="login-email" placeholder="Email or Username" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="login-pass" placeholder="Password" required>
+                        </div>
+                        <button type="submit" class="primary-btn full-width">Log in</button>
+                    </form>
+                    <p class="auth-switch">Don't have an account? <a href="#" id="to-signup">Sign up</a></p>
+                </div>
+
+                <div class="auth-box" id="signup-box" style="display: none;">
+                    <h2>Create Your Account</h2>
+                    <p>Join GearVault and manage your gear!</p>
+                    <form id="signup-form">
+                        <div class="form-group">
+                            <input type="text" id="signup-name" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="signup-email" placeholder="Email Address" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="signup-pass" placeholder="Password" required>
+                        </div>
+                        <button type="submit" class="primary-btn full-width">Sign Up</button>
+                    </form>
+                    <p class="auth-switch">Already have an account? <a href="#" id="to-login">Log in</a></p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ADD/EDIT GEAR MODAL -->
+    <div id="gear-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add New Gear</h3>
+                <button id="close-modal-btn" class="icon-btn">&times;</button>
+            </div>
+            <form id="gear-form">
+                <input type="hidden" id="gear-id">
+                <div class="form-group">
+                    <label>Item Name</label>
+                    <input type="text" id="gear-name" required placeholder="e.g. Edifier MR3">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="gear-category" required>
+                        <option value="">Select Category</option>
+                        <option value="CPU">CPU</option>
+                        <option value="GPU">GPU</option>
+                        <option value="Audio">Audio</option>
+                        <option value="Peripherals">Peripherals</option>
+                        <option value="Monitor">Monitor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Price (₱)</label>
+                    <input type="number" id="gear-price" step="0.01" required placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label>Condition</label>
+                    <select id="gear-condition" required>
+                        <option value="">Select Condition</option>
+                        <option value="Brand New">Brand New</option>
+                        <option value="Like New">Like New</option>
+                        <option value="Used">Used</option>
+                    </select>
+                </div>
+                <div class="form-group radio-group">
+                    <label>Status:</label>
+                    <label><input type="radio" name="gear-status" value="Owned" required> Owned</label>
+                    <label><input type="radio" name="gear-status" value="Wishlist" required> Wishlist</label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="cancel-modal-btn" class="secondary-btn">Cancel</button>
+                    <button type="submit" class="primary-btn">Add Gear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
