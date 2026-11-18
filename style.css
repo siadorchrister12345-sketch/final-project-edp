@@ -12,6 +12,8 @@
     --primary-color: #2c3e50;
     --accent-color: #3498db;
     --danger-color: #e74c3c;
+    --success-color: #2ecc71;
+    --warn-color: #f39c12;
     --border-color: #dcdde1;
     --card-bg: #ffffff;
 }
@@ -96,6 +98,10 @@ body {
 
 .view-section.active {
     display: block;
+}
+
+.section-header {
+    margin-bottom: 20px;
 }
 
 .welcome-banner {
@@ -201,14 +207,18 @@ body {
 
 .activity-list {
     list-style-type: none;
-    max-height: 150px;
+    max-height: 200px;
     overflow-y: auto;
     font-size: 0.9rem;
 }
 
 .activity-list li {
-    padding: 6px 0;
+    padding: 8px 0;
     border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
 }
 
 .table-responsive {
@@ -231,9 +241,47 @@ body {
 
 .gear-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 15px;
     margin-bottom: 20px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 12px;
+    background: var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--success-color);
+    transition: width 0.25s ease;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-pill.safe {
+    background: rgba(46, 204, 113, 0.2);
+    color: var(--success-color);
+}
+
+.status-pill.warn {
+    background: rgba(243, 156, 18, 0.2);
+    color: var(--warn-color);
+}
+
+.status-pill.danger {
+    background: rgba(231, 76, 60, 0.2);
+    color: var(--danger-color);
 }
 
 .auth-box {
@@ -287,8 +335,10 @@ body {
     background: var(--card-bg);
     padding: 30px;
     border-radius: 8px;
-    width: 400px;
+    width: 450px;
     max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .modal-header {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GearVault - Tech & Audio Inventory Manager</title>
+    <title>GearVault - Tech & Audio Inventory & Build Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,6 +19,8 @@
                 <a href="#" class="nav-link active" data-target="dashboard-view">Dashboard</a>
                 <a href="#" class="nav-link" data-target="inventory-view">My Inventory</a>
                 <a href="#" class="nav-link" data-target="wishlist-view">Wishlist</a>
+                <a href="#" class="nav-link" data-target="projects-view">Projects & Tasks</a>
+                <a href="#" class="nav-link" data-target="builder-tools-view">Build & Audio Tools</a>
                 <a href="#" class="nav-link" data-target="analytics-view">Analytics</a>
                 <a href="#" class="nav-link" data-target="settings-view">Settings</a>
                 <a href="#" class="nav-link logout-link" id="logout-btn">Log out</a>
@@ -32,7 +34,7 @@
             <section id="dashboard-view" class="view-section">
                 <div class="welcome-banner">
                     <h2>Welcome Back, <span id="user-display-name">User</span>!</h2>
-                    <p>Manage your tech, track your gear, and plan your next upgrade.</p>
+                    <p>Manage your tech, track your gear, and plan your next build upgrade.</p>
                 </div>
 
                 <div class="stats-grid">
@@ -63,6 +65,9 @@
                         <option value="All">All Categories</option>
                         <option value="CPU">CPU</option>
                         <option value="GPU">GPU</option>
+                        <option value="Motherboard">Motherboard</option>
+                        <option value="RAM">RAM</option>
+                        <option value="PSU">PSU</option>
                         <option value="Audio">Audio</option>
                         <option value="Peripherals">Peripherals</option>
                         <option value="Monitor">Monitor</option>
@@ -75,6 +80,9 @@
                         <h3>Inventory Summary</h3>
                         <p>Owned Budget: <span id="summary-owned-budget">₱0.00</span></p>
                         <p>Wishlist Total: <span id="summary-wishlist-total">₱0.00</span></p>
+                        <hr style="margin: 12px 0; border: 0; border-top: 1px solid var(--border-color);">
+                        <p>PSU Power Draw: <strong id="dash-psu-summary">0W / 650W</strong></p>
+                        <p>Compatibility Status: <strong id="dash-compat-summary">Checking...</strong></p>
                     </div>
                     <div class="widget-box">
                         <h3>Gear by Category</h3>
@@ -93,7 +101,7 @@
             <section id="inventory-view" class="view-section">
                 <div class="section-header">
                     <h2>My Inventory</h2>
-                    <p>View and manage all your owned gear</p>
+                    <p>View and manage all your owned gear and component specs</p>
                 </div>
                 <div class="table-responsive">
                     <table class="gear-table">
@@ -103,6 +111,8 @@
                                 <th>Category</th>
                                 <th>Price</th>
                                 <th>Condition</th>
+                                <th>Spec / Platform</th>
+                                <th>Description / Reason</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -119,7 +129,7 @@
             <section id="wishlist-view" class="view-section">
                 <div class="section-header">
                     <h2>My Wishlist</h2>
-                    <p>Your dream upgrades in one place</p>
+                    <p>Your dream upgrades and notes on why you need them</p>
                 </div>
                 <div class="gear-grid" id="wishlist-grid">
                     <!-- Dynamic cards injected here -->
@@ -130,7 +140,114 @@
                 </div>
             </section>
 
-            <!-- 4. ANALYTICS VIEW -->
+            <!-- 4. PROJECTS & TASKS VIEW -->
+            <section id="projects-view" class="view-section">
+                <div class="section-header">
+                    <h2>Projects & Task Queue</h2>
+                    <p>Manage ongoing builds, finished projects, and daily maintenance tasks.</p>
+                </div>
+                
+                <div class="dashboard-widgets">
+                    <!-- Task Queue Widget -->
+                    <div class="widget-box">
+                        <h3>Task Queue (Tasks for Today)</h3>
+                        <form id="task-form" style="display: flex; gap: 10px; margin-bottom: 15px;">
+                            <input type="text" id="task-input" placeholder="e.g. Clean the computer dust filters" required style="flex:1; padding: 8px; border:1px solid var(--border-color); border-radius:4px; background:var(--bg-color); color:var(--text-color);">
+                            <button type="submit" class="primary-btn">Add Task</button>
+                        </form>
+                        <ul id="task-list" class="activity-list">
+                            <!-- Tasks injected here -->
+                        </ul>
+                    </div>
+
+                    <!-- Ongoing Projects Widget -->
+                    <div class="widget-box">
+                        <h3>Ongoing Projects / Custom Builds</h3>
+                        <form id="project-form" style="display: flex; gap: 10px; margin-bottom: 15px;">
+                            <input type="text" id="project-name-input" placeholder="Project Name (e.g. 4L Speaker Build)" required style="flex:1; padding: 8px; border:1px solid var(--border-color); border-radius:4px; background:var(--bg-color); color:var(--text-color);">
+                            <button type="submit" class="primary-btn">New Project</button>
+                        </form>
+                        <div id="ongoing-projects-list">
+                            <!-- Ongoing projects injected here -->
+                        </div>
+                    </div>
+
+                    <!-- Completed Projects Widget -->
+                    <div class="widget-box">
+                        <h3>Completed Projects / Archives</h3>
+                        <div id="completed-projects-list">
+                            <!-- Completed projects injected here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. BUILD & AUDIO TOOLS VIEW (NEW) -->
+            <section id="builder-tools-view" class="view-section">
+                <div class="section-header">
+                    <h2>Build & Audio Engineering Tools</h2>
+                    <p>Power draw calculator, component compatibility checker, and enclosure volume estimator.</p>
+                </div>
+
+                <div class="dashboard-widgets">
+                    <!-- PSU Wattage Safety Calculator -->
+                    <div class="widget-box">
+                        <h3>PSU Wattage Safety Calculator</h3>
+                        <div class="form-group">
+                            <label for="psu-capacity-input">Your PSU Rating (Watts)</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="number" id="psu-capacity-input" min="100" max="2000" value="650">
+                                <button type="button" id="save-psu-btn" class="secondary-btn">Update PSU</button>
+                            </div>
+                        </div>
+                        <p>Estimated Logged PC Draw: <strong id="psu-total-draw">0W</strong></p>
+                        <p>Remaining Safe Headroom: <strong id="psu-headroom">650W</strong></p>
+                        <p>Safety Status: <span id="psu-status-badge" class="status-pill safe">Safe</span></p>
+                        <div class="progress-track">
+                            <div id="psu-progress-fill" class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <p style="font-size: 0.8rem; color: #7f8c8d; margin-top: 8px;">
+                            Tip: Keep total draw around or below 75%–80% of PSU capacity for efficiency and headroom.
+                        </p>
+                    </div>
+
+                    <!-- PC Component Compatibility Checker -->
+                    <div class="widget-box">
+                        <h3>PC Component Compatibility Checker</h3>
+                        <p style="font-size: 0.85rem; color: #7f8c8d; margin-bottom: 10px;">
+                            Checks logged CPU, Motherboard, RAM, and PSU entries for basic platform and power conflicts.
+                        </p>
+                        <ul id="compat-results-list" class="activity-list">
+                            <!-- Compatibility checks injected here -->
+                        </ul>
+                    </div>
+
+                    <!-- DIY Audio Enclosure Volume Estimator -->
+                    <div class="widget-box">
+                        <h3>DIY Audio Enclosure Volume Estimator</h3>
+                        <form id="enclosure-form">
+                            <div class="form-group">
+                                <label>Internal Length (cm)</label>
+                                <input type="number" id="enc-length" step="0.1" min="1" required placeholder="e.g. 24">
+                            </div>
+                            <div class="form-group">
+                                <label>Internal Width (cm)</label>
+                                <input type="number" id="enc-width" step="0.1" min="1" required placeholder="e.g. 16">
+                            </div>
+                            <div class="form-group">
+                                <label>Internal Height (cm)</label>
+                                <input type="number" id="enc-height" step="0.1" min="1" required placeholder="e.g. 12">
+                            </div>
+                            <button type="submit" class="primary-btn full-width">Calculate Volume</button>
+                        </form>
+                        <div id="enclosure-result" style="margin-top: 12px; font-size: 0.9rem;">
+                            Enter internal dimensions to compute net liters.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. ANALYTICS VIEW -->
             <section id="analytics-view" class="view-section">
                 <div class="section-header">
                     <h2>Analytics</h2>
@@ -155,7 +272,7 @@
                 </div>
             </section>
 
-            <!-- 5. SETTINGS VIEW -->
+            <!-- 7. SETTINGS VIEW -->
             <section id="settings-view" class="view-section">
                 <div class="section-header">
                     <h2>Settings</h2>
@@ -185,7 +302,7 @@
                 </div>
             </section>
 
-            <!-- 6. LOGIN / SIGNUP VIEW -->
+            <!-- 8. LOGIN / SIGNUP VIEW -->
             <section id="login-view" class="view-section active">
                 <div class="auth-box" id="login-box">
                     <h2>Welcome Back!</h2>
@@ -235,7 +352,7 @@
                 <input type="hidden" id="gear-id">
                 <div class="form-group">
                     <label>Item Name</label>
-                    <input type="text" id="gear-name" required placeholder="e.g. Edifier MR3">
+                    <input type="text" id="gear-name" required placeholder="e.g. Ryzen 7 5700X or Edifier MR3">
                 </div>
                 <div class="form-group">
                     <label>Category</label>
@@ -243,6 +360,9 @@
                         <option value="">Select Category</option>
                         <option value="CPU">CPU</option>
                         <option value="GPU">GPU</option>
+                        <option value="Motherboard">Motherboard</option>
+                        <option value="RAM">RAM</option>
+                        <option value="PSU">PSU</option>
                         <option value="Audio">Audio</option>
                         <option value="Peripherals">Peripherals</option>
                         <option value="Monitor">Monitor</option>
@@ -260,6 +380,25 @@
                         <option value="Like New">Like New</option>
                         <option value="Used">Used</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label>Estimated Wattage (W, optional for PC parts)</label>
+                    <input type="number" id="gear-wattage" min="0" max="1500" placeholder="e.g. 65 or 170">
+                </div>
+                <div class="form-group">
+                    <label>Platform / Spec Tag (optional)</label>
+                    <select id="gear-platform">
+                        <option value="">None / General</option>
+                        <option value="AM4">AM4</option>
+                        <option value="AM5">AM5</option>
+                        <option value="LGA1700">LGA1700</option>
+                        <option value="DDR4">DDR4</option>
+                        <option value="DDR5">DDR5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description / Reason (Why I want/have this)</label>
+                    <textarea id="gear-desc" rows="2" placeholder="e.g. Needed for better audio mixing or upgrade path." style="width:100%; padding:8px; border-radius:4px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-color);"></textarea>
                 </div>
                 <div class="form-group radio-group">
                     <label>Status:</label>
